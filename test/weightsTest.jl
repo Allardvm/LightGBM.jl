@@ -2,15 +2,33 @@
 
 @testset "weightsTest.jl" begin
     try
-        binary_test = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/binary_classification/binary.test", '\t');
-        binary_train = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/binary_classification/binary.train", '\t');
+        if isfile( string(ENV["LIGHTGBM_PATH"],"/examples/binary_classification/binary.test") )
+            binary_test = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/binary_classification/binary.test", '\t');
+            binary_train = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/binary_classification/binary.train", '\t');
+            binary_test_weight = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/binary_classification/binary.test.weight", '\t')[:,1];
+            binary_train_weight = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/binary_classification/binary.train.weight", '\t')[:,1];
+        else
+            res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/binary_classification/binary.test");
+            work=String(res.body);
+            binary_test =convert(Matrix,CSV.read(IOBuffer(work),delim='\t',header=false));
+    
+            res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/binary_classification/binary.train");
+            work=String(res.body);
+            binary_train =convert(Matrix,CSV.read(IOBuffer(work),delim='\t',header=false));
+
+            res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/binary_classification/binary.test.weight");
+            work=String(res.body);
+            binary_test_weight =convert(Matrix,CSV.read(IOBuffer(work),delim='\t',header=false))[:,1];
+    
+            res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/binary_classification/binary.train.weight");
+            work=String(res.body);
+            binary_train_weight =convert(Matrix,CSV.read(IOBuffer(work),delim='\t',header=false))[:,1];
+        end
+        
         X_train = binary_train[:, 2:end]
         y_train = binary_train[:, 1]
         X_test = binary_test[:, 2:end]
         y_test = binary_test[:, 1]
-
-        binary_test_weight = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/binary_classification/binary.test.weight", '\t')[:,1];
-        binary_train_weight = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/binary_classification/binary.train.weight", '\t')[:,1];
 
         # Test binary estimator.
         estimator = LightGBM.LGBMBinary(num_iterations = 20,

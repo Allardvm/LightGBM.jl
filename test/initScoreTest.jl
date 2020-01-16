@@ -6,16 +6,34 @@
 @testset "initScoreTest.jl" begin
     try
         # Test regression estimator.
-        regression_test = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/regression/regression.test", '\t');
-        regression_train = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/regression/regression.train", '\t');
+        if isfile( string(ENV["LIGHTGBM_PATH"],"/examples/binary_classification/regression.test") )
+            regression_test = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/regression/regression.test", '\t');
+            regression_train = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/regression/regression.train", '\t');
+            regression_test_init = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/regression/regression.test.init", '\t')[:,1];
+            regression_train_init = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/regression/regression.train.init", '\t')[:,1]; 
+        else
+            res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/binary_classification/regression.test");
+            work=String(res.body);
+            regression_test =convert(Matrix,CSV.read(IOBuffer(work),delim='\t',header=false));
+    
+            res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/binary_classification/regression.train");
+            work=String(res.body);
+            regression_train =convert(Matrix,CSV.read(IOBuffer(work),delim='\t',header=false));
+
+            res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/binary_classification/regression.test.init");
+            work=String(res.body);
+            regression_test_init =convert(Matrix,CSV.read(IOBuffer(work),delim='\t',header=false))[:,1];
+    
+            res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/binary_classification/regression.train.init");
+            work=String(res.body);
+            regression_train_init =convert(Matrix,CSV.read(IOBuffer(work),delim='\t',header=false))[:,1];
+        end
+
         X_train = regression_train[:, 2:end]
         y_train = regression_train[:, 1]
         X_test = regression_test[:, 2:end]
         y_test = regression_test[:, 1]
-
-        regression_test_init = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/regression/regression.test.init", '\t')[:,1];
-        regression_train_init = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/regression/regression.train.init", '\t')[:,1];
-
+      
         estimator = LightGBM.LGBMRegression(num_iterations = 100,
                                             learning_rate = .05,
                                             feature_fraction = .9,

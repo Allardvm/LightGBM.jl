@@ -2,11 +2,23 @@ using LightGBM
 using Test
 using DelimitedFiles
 using StatsBase
+using DataFrames,CSV
 
 @testset "LightGBM.jl" begin
     # Use binary example for generic tests.
-    binary_test = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/binary_classification/binary.test", '\t');
-    binary_train = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/binary_classification/binary.train", '\t');
+    if isfile( string(ENV["LIGHTGBM_PATH"],"/examples/binary_classification/binary.test") )
+        binary_test = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/binary_classification/binary.test", '\t');
+        binary_train = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/binary_classification/binary.train", '\t');
+    else
+        res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/binary_classification/binary.test");
+        work=String(res.body);
+        binary_test =convert(Matrix,CSV.read(IOBuffer(work),delim='\t',header=false));
+
+        res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/binary_classification/binary.train");
+        work=String(res.body);
+        binary_train =convert(Matrix,CSV.read(IOBuffer(work),delim='\t',header=false));
+    end
+
     X_train = binary_train[:, 2:end]
     y_train = binary_train[:, 1]
     X_test = binary_test[:, 2:end]
@@ -75,8 +87,19 @@ using StatsBase
     LightGBM.search_cv(estimator, X_train, y_train, splits, params; verbosity = 0);
 
     # Test regression estimator.
-    regression_test = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/regression/regression.test", '\t');
-    regression_train = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/regression/regression.train", '\t');
+    if isfile( string(ENV["LIGHTGBM_PATH"],"/examples/binary_classification/regression.test") )
+        regression_test = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/regression/regression.test", '\t');
+        regression_train = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/regression/regression.train", '\t');
+    else
+        res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/binary_classification/regression.test");
+        work=String(res.body);
+        regression_test =convert(Matrix,CSV.read(IOBuffer(work),delim='\t',header=false));
+
+        res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/binary_classification/regression.train");
+        work=String(res.body);
+        regression_train =convert(Matrix,CSV.read(IOBuffer(work),delim='\t',header=false));
+    end
+
     X_train = regression_train[:, 2:end]
     y_train = regression_train[:, 1]
     X_test = regression_test[:, 2:end]
@@ -100,8 +123,19 @@ using StatsBase
     @test scores["test_1"]["l2"][end] < .5
 
     # Test multiclass estimator.
-    multiclass_test = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/multiclass_classification/multiclass.test", '\t');
-    multiclass_train = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/multiclass_classification/multiclass.train", '\t');
+    if isfile( string(ENV["LIGHTGBM_PATH"],"/examples/binary_classification/multiclass.test") )
+        multiclass_test = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/multiclass_classification/multiclass.test", '\t');
+        multiclass_train = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/multiclass_classification/multiclass.train", '\t');
+    else
+        res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/binary_classification/multiclass.test");
+        work=String(res.body);
+        multiclass_test =convert(Matrix,CSV.read(IOBuffer(work),delim='\t',header=false));
+
+        res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/binary_classification/multiclass.train");
+        work=String(res.body);
+        multiclass_train =convert(Matrix,CSV.read(IOBuffer(work),delim='\t',header=false));
+    end
+
     X_train = Matrix(multiclass_train[:, 2:end])
     y_train = Array(multiclass_train[:, 1])
     X_test = Matrix(multiclass_test[:, 2:end])
