@@ -6,15 +6,9 @@ using Dates
 import StatsBase
 
 function __init__()
-    if !haskey(ENV, "LIGHTGBM_PATH")
-        error("Environment variable LIGHTGBM_PATH not found. ",
-            "Set this variable to point to the LightGBM directory prior to loading LightGBM.jl ",
-            "(e.g. `ENV[\"LIGHTGBM_PATH\"] = \"../LightGBM\"`).")
-    else
-        if isfile(LGBM_library)
-            include(joinpath(@__DIR__,"deps/build.jl"))
-        end
-
+    try
+        ENV["LIGHTGBM_PATH"]
+    catch
         if Sys.islinux()
             prefix=joinpath(@__DIR__, "usr/lib/lib_lightgbm.so")
         elseif Sys.iswindows()
@@ -26,9 +20,19 @@ function __init__()
         end
 
         if isfile(prefix)
-            ENV["LIGHTGBM_PATH"] = prefix
+            include(joinpath(@__DIR__,"deps/build.jl"))
         end
 
+        if isfile(prefix)
+            ENV["LIGHTGBM_PATH"] = prefix
+        end
+    end
+
+    if !haskey(ENV, "LIGHTGBM_PATH")
+        error("Environment variable LIGHTGBM_PATH not found. ",
+            "Set this variable to point to the LightGBM directory prior to loading LightGBM.jl ",
+            "(e.g. `ENV[\"LIGHTGBM_PATH\"] = \"../LightGBM\"`).")
+    else
         global LGBM_library = Libdl.find_library(["lib_lightgbm.so", "lib_lightgbm.dll",
             "lib_lightgbm.dylib"], [ENV["LIGHTGBM_PATH"]])
 

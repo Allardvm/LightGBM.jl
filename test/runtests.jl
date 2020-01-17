@@ -2,7 +2,7 @@ using LightGBM
 using Test
 using DelimitedFiles
 using StatsBase
-using DataFrames,CSV
+using DataFrames,CSV,HTTP
 
 @testset "LightGBM.jl" begin
     # Use binary example for generic tests.
@@ -87,15 +87,15 @@ using DataFrames,CSV
     LightGBM.search_cv(estimator, X_train, y_train, splits, params; verbosity = 0);
 
     # Test regression estimator.
-    if isfile( string(ENV["LIGHTGBM_PATH"],"/examples/binary_classification/regression.test") )
+    if isfile( string(ENV["LIGHTGBM_PATH"],"/examples/regression/regression.test") )
         regression_test = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/regression/regression.test", '\t');
         regression_train = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/regression/regression.train", '\t');
     else
-        res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/binary_classification/regression.test");
+        res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/regression/regression.test");
         work=String(res.body);
         regression_test =convert(Matrix,CSV.read(IOBuffer(work),delim='\t',header=false));
 
-        res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/binary_classification/regression.train");
+        res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/regression/regression.train");
         work=String(res.body);
         regression_train =convert(Matrix,CSV.read(IOBuffer(work),delim='\t',header=false));
     end
@@ -123,15 +123,15 @@ using DataFrames,CSV
     @test scores["test_1"]["l2"][end] < .5
 
     # Test multiclass estimator.
-    if isfile( string(ENV["LIGHTGBM_PATH"],"/examples/binary_classification/multiclass.test") )
+    if isfile( string(ENV["LIGHTGBM_PATH"],"/examples/multiclass_classification/multiclass.test") )
         multiclass_test = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/multiclass_classification/multiclass.test", '\t');
         multiclass_train = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/multiclass_classification/multiclass.train", '\t');
     else
-        res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/binary_classification/multiclass.test");
+        res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/multiclass_classification/multiclass.test");
         work=String(res.body);
         multiclass_test =convert(Matrix,CSV.read(IOBuffer(work),delim='\t',header=false));
 
-        res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/binary_classification/multiclass.train");
+        res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/multiclass_classification/multiclass.train");
         work=String(res.body);
         multiclass_train =convert(Matrix,CSV.read(IOBuffer(work),delim='\t',header=false));
     end
