@@ -16,7 +16,7 @@ function setup()
             global prefix=joinpath(ligthgbmpath,"lib_lightgbm.so")
         elseif Sys.iswindows()
             global prefix=joinpath(ligthgbmpath,"lib_lightgbm.dll")
-        elseif Sys.ismacos()
+        elseif Sys.isapple()
             global prefix=joinpath(ligthgbmpath,"lib_lightgbm.dylib")
         else
             global prefix=""
