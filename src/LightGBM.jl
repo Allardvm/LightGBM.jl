@@ -5,28 +5,38 @@ using Libdl
 using Dates
 import StatsBase
 
-function __init__()
+# if LIGHTGBM_PATH is difined, automatical define LIGHTGBM_PATH
+function setup()
     try
         ENV["LIGHTGBM_PATH"]
     catch
+        println("setup...")
+        global ligthgbmpath=joinpath(abspath(joinpath(dirname(Base.find_package("LightGBM")), "..")),"deps/usr/lib")
         if Sys.islinux()
-            prefix=joinpath(@__DIR__, "usr/lib/lib_lightgbm.so")
+            global prefix=joinpath(ligthgbmpath,"lib_lightgbm.so")
         elseif Sys.iswindows()
-            prefix=joinpath(@__DIR__, "usr/lib/lib_lightgbm.dll")
+            global prefix=joinpath(ligthgbmpath,"lib_lightgbm.dll")
         elseif Sys.ismacos()
-            prefix=joinpath(@__DIR__, "usr/lib/lib_lightgbm.dylib")
+            global prefix=joinpath(ligthgbmpath,"lib_lightgbm.dylib")
         else
-            prefix=""
+            global prefix=""
+        end
+
+        if !isfile(prefix)
+            include(joinpath(abspath(joinpath(dirname(Base.find_package("LightGBM")), "..")),"deps/build.jl"))
         end
 
         if isfile(prefix)
-            include(joinpath(@__DIR__,"deps/build.jl"))
-        end
-
-        if isfile(prefix)
-            ENV["LIGHTGBM_PATH"] = prefix
+            return global ENV["LIGHTGBM_PATH"] = ligthgbmpath
         end
     end
+end
+
+# pre initialization
+setup()
+
+function __init__()
+    setup()
 
     if !haskey(ENV, "LIGHTGBM_PATH")
         error("Environment variable LIGHTGBM_PATH not found. ",
