@@ -12,6 +12,7 @@ function setup()
     catch
         println("setup...")
         global ligthgbmpath=joinpath(abspath(joinpath(dirname(Base.find_package("LightGBM")), "..")),"deps/usr/lib")
+        println(ligthgbmpath)
         if Sys.islinux()
             global prefix=joinpath(ligthgbmpath,"lib_lightgbm.so")
         elseif Sys.iswindows()
@@ -23,11 +24,13 @@ function setup()
         end
 
         if !isfile(prefix)
+            println("install library")
             include(joinpath(abspath(joinpath(dirname(Base.find_package("LightGBM")), "..")),"deps/build.jl"))
         end
 
         if isfile(prefix)
             return global ENV["LIGHTGBM_PATH"] = ligthgbmpath
+            println("setup LIGHTGBM_PATH")
         end
     end
 end

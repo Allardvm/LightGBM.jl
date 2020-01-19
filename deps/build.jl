@@ -4,7 +4,7 @@ using BinaryProvider
 const verbose = "--verbose" in ARGS
 #const prefix = Prefix(get([a for a in ARGS if a != "--verbose"], 1, joinpath(@__DIR__, "usr")))
 
-global ligthgbmpath=joinpath(abspath(joinpath(dirname(Base.find_package("LightGBM")), "..")),"deps/usr/lib")
+#global ligthgbmpath=joinpath(abspath(joinpath(dirname(Base.find_package("LightGBM")), "..")),"deps/usr/lib")
 if Sys.islinux()
     global prefix=joinpath(ligthgbmpath,"lib_lightgbm.so")
 elseif Sys.iswindows()
@@ -36,9 +36,7 @@ end
 # download
 if unsatisfied || !isinstalled(dl_info...; prefix=prefix)
     # Download and install binaries
-    dirpath=splitdir(prefix)[1]
-    mkdir(splitdir(dirpath)[1])
-    mkdir(dirpath)
+    mkpath(ligthgbmpath)
     download(dl_info[1],prefix)
 
 end
