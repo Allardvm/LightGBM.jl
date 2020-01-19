@@ -8,7 +8,7 @@ if Sys.islinux()
     prefix=joinpath(@__DIR__, "usr/lib/lib_lightgbm.so")
 elseif Sys.iswindows()
     prefix=joinpath(@__DIR__, "usr/lib/lib_lightgbm.dll")
-elseif Sys.ismacos()
+elseif Sys.isapple()
     prefix=joinpath(@__DIR__, "usr/lib/lib_lightgbm.dylib")
 else
     error("not matching OS")
