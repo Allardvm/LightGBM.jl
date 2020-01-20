@@ -38,5 +38,5 @@ if unsatisfied || !isinstalled(dl_info...; prefix=prefix)
     # Download and install binaries
     mkpath(ligthgbmpath)
     download(dl_info[1],prefix)
-
+    println("installed library:",prefix)
 end
