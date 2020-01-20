@@ -6,11 +6,11 @@ using Dates
 import StatsBase
 
 # if LIGHTGBM_PATH is difined, automatical define LIGHTGBM_PATH
-function setup()
+function lgbm_librarysetup()
     try
-        ENV["LIGHTGBM_PATH"]
+        println(ENV["LIGHTGBM_PATH"])
     catch
-        println("setup...")
+        println("LightGBM library setup...")
         global ligthgbmpath=joinpath(abspath(joinpath(dirname(Base.find_package("LightGBM")), "..")),"deps/usr/lib")
         println(ligthgbmpath)
         if Sys.islinux()
@@ -29,17 +29,19 @@ function setup()
         end
 
         if isfile(prefix)
-            return global ENV["LIGHTGBM_PATH"] = ligthgbmpath
-            println("setup LIGHTGBM_PATH")
+            println("set path")
+            return ligthgbmpath
+        else
+            println("Not find LightGBM library")
         end
     end
 end
 
 # pre initialization
-setup()
+ENV["LIGHTGBM_PATH"] = lgbm_librarysetup()
 
 function __init__()
-    setup()
+    ENV["LIGHTGBM_PATH"] = lgbm_librarysetup()
 
     if !haskey(ENV, "LIGHTGBM_PATH")
         error("Environment variable LIGHTGBM_PATH not found. ",
