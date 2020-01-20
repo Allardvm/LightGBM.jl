@@ -29,7 +29,7 @@ function lgbm_librarysetup()
         end
 
         if isfile(prefix)
-            println("set path")
+            println("set path:",ligthgbmpath)
             return ligthgbmpath
         else
             println("Not find LightGBM library")
