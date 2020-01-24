@@ -10,7 +10,7 @@ function lgbm_librarysetup()
     try
         println(ENV["LIGHTGBM_PATH"])
     catch
-        println("LightGBM library setup...")
+        println("LightGBM library setup start...")
         global ligthgbmpath=joinpath(abspath(joinpath(dirname(Base.find_package("LightGBM")), "..")),"deps/usr/lib")
         println(ligthgbmpath)
         if Sys.islinux()
@@ -29,7 +29,7 @@ function lgbm_librarysetup()
         end
 
         if isfile(prefix)
-            println("set path:",ligthgbmpath)
+            println("set library path:",ligthgbmpath)
             return ligthgbmpath
         else
             println("Not find LightGBM library")
@@ -52,9 +52,14 @@ function __init__()
             "lib_lightgbm.dylib"], [ENV["LIGHTGBM_PATH"]])
 
         if LGBM_library == ""
-            error("Could not open the LightGBM library at $(ENV["LIGHTGBM_PATH"]). ",
-                  "Set this variable to point to the LightGBM directory prior to loading LightGBM.jl ",
-                  "(e.g. `ENV[\"LIGHTGBM_PATH\"] = \"../LightGBM\"`).")
+            global LGBM_library = Libdl.find_library(["lib_lightgbm.so", "lib_lightgbm.dll",
+            "lib_lightgbm.dylib"], [lgbm_librarysetup()])
+
+            if LGBM_library == ""
+                error("Could not open the LightGBM library at $(ENV["LIGHTGBM_PATH"]). ",
+                    "Set this variable to point to the LightGBM directory prior to loading LightGBM.jl ",
+                    "(e.g. `ENV[\"LIGHTGBM_PATH\"] = \"../LightGBM\"`).")
+            end
         end
     end
 end
