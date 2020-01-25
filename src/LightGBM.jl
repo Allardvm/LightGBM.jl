@@ -8,11 +8,11 @@ import StatsBase
 # if LIGHTGBM_PATH is difined, automatical define LIGHTGBM_PATH
 function lgbm_librarysetup()
     try
-        println(ENV["LIGHTGBM_PATH"])
+        println("ENV[\"LIGHTGBM_PATH\"] is",ENV["LIGHTGBM_PATH"])
+        return ENV["LIGHTGBM_PATH"]
     catch
         println("LightGBM library setup start...")
         global ligthgbmpath=joinpath(abspath(joinpath(dirname(Base.find_package("LightGBM")), "..")),"deps/usr/lib")
-        println(ligthgbmpath)
         if Sys.islinux()
             global prefix=joinpath(ligthgbmpath,"lib_lightgbm.so")
         elseif Sys.iswindows()
@@ -77,6 +77,6 @@ include("LightGBM-util2.jl")
 
 export fit, predict, cv, search_cv, savemodel, loadmodel
 export LGBMEstimator, LGBMRegression, LGBMBinary, LGBMMulticlass
-export metaformattedclassresult, metaformattedclassresult, formattedclassfit, predict2
+export metaformattedclassresult, metaformattedclassresult, formattedclassfit, predict2,lgbm_librarysetup
 
 end # module LightGBM
