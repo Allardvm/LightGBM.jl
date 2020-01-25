@@ -56,6 +56,10 @@ function __init__()
             "lib_lightgbm.dylib"], [lgbm_librarysetup()])
 
             if LGBM_library == ""
+                LGBM_library == prefix
+            end
+
+            if LGBM_library == ""
                 error("Could not open the LightGBM library at $(ENV["LIGHTGBM_PATH"]). ",
                     "Set this variable to point to the LightGBM directory prior to loading LightGBM.jl ",
                     "(e.g. `ENV[\"LIGHTGBM_PATH\"] = \"../LightGBM\"`).")
