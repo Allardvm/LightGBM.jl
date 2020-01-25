@@ -48,17 +48,17 @@ function __init__()
             "Set this variable to point to the LightGBM directory prior to loading LightGBM.jl ",
             "(e.g. `ENV[\"LIGHTGBM_PATH\"] = \"../LightGBM\"`).")
     else
-        global LGBM_library = Libdl.find_library(["lib_lightgbm.so", "lib_lightgbm.dll",
-            "lib_lightgbm.dylib"], [ENV["LIGHTGBM_PATH"]])
-
-        if LGBM_library == ""
+        try
+            global LGBM_library = Libdl.find_library(["lib_lightgbm.so", "lib_lightgbm.dll",
+                "lib_lightgbm.dylib"], [ENV["LIGHTGBM_PATH"]])
+        catch
             println("LGBM_library is null. step1..")
             global LGBM_library = Libdl.find_library(["lib_lightgbm.so", "lib_lightgbm.dll",
             "lib_lightgbm.dylib"], [lgbm_librarysetup()])
 
             if LGBM_library == ""
                 println("LGBM_library is null. step2..")
-                LGBM_library = prefix
+                global LGBM_library = prefix
             end
 
             if LGBM_library == ""
@@ -68,6 +68,7 @@ function __init__()
             end
         end
     end
+    println("Finished __init__()")
 end
 
 const LGBM_library = find_library(["lib_lightgbm.so", "lib_lightgbm.dll", "lib_lightgbm.dylib"], [ENV["LIGHTGBM_PATH"]])
@@ -83,6 +84,6 @@ include("LightGBM-util2.jl")
 
 export fit, predict, cv, search_cv, savemodel, loadmodel
 export LGBMEstimator, LGBMRegression, LGBMBinary, LGBMMulticlass
-export metaformattedclassresult, metaformattedclassresult, formattedclassfit, predict2,lgbm_librarysetup
+export metaformattedclassresult, metaformattedclassresult, formattedclassfit, predict2
 
 end # module LightGBM

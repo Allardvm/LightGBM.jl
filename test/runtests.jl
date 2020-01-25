@@ -6,6 +6,7 @@ using DataFrames,CSV,HTTP
 
 @testset "LightGBM.jl" begin
     # Use binary example for generic tests.
+    println(ENV["LIGHTGBM_PATH"])
     if isfile( string(ENV["LIGHTGBM_PATH"],"/examples/binary_classification/binary.test") )
         binary_test = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/binary_classification/binary.test", '\t');
         binary_train = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/binary_classification/binary.train", '\t');
