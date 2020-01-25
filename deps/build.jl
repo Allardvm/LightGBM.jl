@@ -4,16 +4,16 @@ using BinaryProvider
 const verbose = "--verbose" in ARGS
 #const prefix = Prefix(get([a for a in ARGS if a != "--verbose"], 1, joinpath(@__DIR__, "usr")))
 
-global ligthgbmpath=joinpath(abspath(joinpath(dirname(Base.find_package("LightGBM")), "..")),"deps/usr/lib")
-if Sys.islinux()
-    global prefix=joinpath(ligthgbmpath,"lib_lightgbm.so")
-elseif Sys.iswindows()
-    global prefix=joinpath(ligthgbmpath,"lib_lightgbm.dll")
-elseif Sys.isapple()
-    global prefix=joinpath(ligthgbmpath,"lib_lightgbm.dylib")
-else
-    error("not matching OS")
-end
+#global ligthgbmpath=joinpath(abspath(joinpath(dirname(Base.find_package("LightGBM")), "..")),"deps/usr/lib")
+#if Sys.islinux()
+#    global prefix=joinpath(ligthgbmpath,"lib_lightgbm.so")
+#elseif Sys.iswindows()
+#    global prefix=joinpath(ligthgbmpath,"lib_lightgbm.dll")
+#elseif Sys.isapple()
+#    global prefix=joinpath(ligthgbmpath,"lib_lightgbm.dylib")
+#else
+#    error("not matching OS")
+#end
 
 products = [
     LibraryProduct(prefix, ["lib_lightgbm"], :lib_lightgbm),

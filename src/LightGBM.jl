@@ -8,7 +8,7 @@ import StatsBase
 # if LIGHTGBM_PATH is difined, automatical define LIGHTGBM_PATH
 function lgbm_librarysetup()
     try
-        println("ENV[\"LIGHTGBM_PATH\"] is",ENV["LIGHTGBM_PATH"])
+        println("ENV[\"LIGHTGBM_PATH\"] is　",ENV["LIGHTGBM_PATH"])
         return ENV["LIGHTGBM_PATH"]
     catch
         println("LightGBM library setup start...")
@@ -24,12 +24,12 @@ function lgbm_librarysetup()
         end
 
         if !isfile(prefix)
-            println("install library")
+            println("Instaling library")
             include(joinpath(abspath(joinpath(dirname(Base.find_package("LightGBM")), "..")),"deps/build.jl"))
         end
 
         if isfile(prefix)
-            println("set library path:",ligthgbmpath)
+            println("Set library path:",ligthgbmpath)
             return ligthgbmpath
         else
             println("Not find LightGBM library")
