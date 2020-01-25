@@ -52,11 +52,13 @@ function __init__()
             "lib_lightgbm.dylib"], [ENV["LIGHTGBM_PATH"]])
 
         if LGBM_library == ""
+            println("LGBM_library is null. step1..")
             global LGBM_library = Libdl.find_library(["lib_lightgbm.so", "lib_lightgbm.dll",
             "lib_lightgbm.dylib"], [lgbm_librarysetup()])
 
             if LGBM_library == ""
-                LGBM_library == prefix
+                println("LGBM_library is null. step2..")
+                LGBM_library = prefix
             end
 
             if LGBM_library == ""
