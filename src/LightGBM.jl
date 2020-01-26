@@ -73,10 +73,8 @@ function __init__()
     println("Finished __init__()")
 end
 
-println("ENV[\"LIGHTGBM_PATH\"] is ",ENV["LIGHTGBM_PATH"])
 #const LGBM_library = find_library(["lib_lightgbm.so", "lib_lightgbm.dll", "lib_lightgbm.dylib"], [lgbm_librarysetup()])
 const LGBM_library = find_library(["lib_lightgbm.so", "lib_lightgbm.dll", "lib_lightgbm.dylib"], [ENV["LIGHTGBM_PATH"]])
-println("LGBM_library is ",LGBM_library)
 
 include("wrapper.jl")
 include("estimators.jl")
