@@ -7,7 +7,6 @@ using DataFrames,CSV,HTTP
 @testset "LightGBM.jl" begin
     # Use binary example for generic tests.
     println("runtest.jl ENV[\"LIGHTGBM_PATH\"] is ",ENV["LIGHTGBM_PATH"])
-    println("runtest.jl LGBM_library is ",LGBM_library)
     if isfile( string(ENV["LIGHTGBM_PATH"],"/examples/binary_classification/binary.test") )
         binary_test = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/binary_classification/binary.test", '\t');
         binary_train = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/binary_classification/binary.train", '\t');
