@@ -38,5 +38,7 @@ if unsatisfied || !isinstalled(dl_info...; prefix=prefix)
     # Download and install binaries
     mkpath(ligthgbmpath)
     download(dl_info[1],prefix)
-    println("Installed library:",prefix)
+    println("Installed library")
+    println("Before loading LightGBM.jl, set this variable to point to the directory where you installed the LightGBM library.")
+    println("ENV[\"LIGHTGBM_PATH\"] =",ligthgbmpath)
 end

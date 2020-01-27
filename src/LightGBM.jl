@@ -11,7 +11,7 @@ function lgbm_librarysetup()
         println("ENV[\"LIGHTGBM_PATH\"] is　",ENV["LIGHTGBM_PATH"])
         return ENV["LIGHTGBM_PATH"]
     catch
-        println("LightGBM library setup start...")
+        println("Don't find ENV[\"LIGHTGBM_PATH\"].LightGBM library setup start...")
         global ligthgbmpath=joinpath(abspath(joinpath(dirname(Base.find_package("LightGBM")), "..")),"deps/usr/lib")
         if Sys.islinux()
             global prefix=joinpath(ligthgbmpath,"lib_lightgbm.so")
@@ -38,7 +38,8 @@ function lgbm_librarysetup()
 end
 
 # pre initialization
-ENV["LIGHTGBM_PATH"] = lgbm_librarysetup()
+ENV["LIGHTGBM_PATH"] = lgbm_librarysetup();
+println("Set ENV[\"LIGHTGBM_PATH\"]=",ENV["LIGHTGBM_PATH"])
 
 function __init__()
     println("Start __init__")
