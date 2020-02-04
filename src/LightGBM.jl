@@ -58,17 +58,17 @@ function __init__()
             println("LGBM_library is null. step2...")
             global LGBM_library = Libdl.find_library(["lib_lightgbm.so", "lib_lightgbm.dll",
             "lib_lightgbm.dylib"], [lgbm_librarysetup()])
+        end
 
-            if LGBM_library == ""
-                println("LGBM_library is null. step3...")
-                global LGBM_library = prefix
-            end
+        if LGBM_library == ""
+            println("LGBM_library is null. step3...")
+            global LGBM_library = prefix
+        end
 
-            if LGBM_library == ""
-                error("Could not open the LightGBM library at $(ENV["LIGHTGBM_PATH"]). ",
-                    "Set this variable to point to the LightGBM directory prior to loading LightGBM.jl ",
-                    "(e.g. `ENV[\"LIGHTGBM_PATH\"] = \"../LightGBM\"`).")
-            end
+        if LGBM_library == ""
+            error("Could not open the LightGBM library at $(ENV["LIGHTGBM_PATH"]). ",
+                "Set this variable to point to the LightGBM directory prior to loading LightGBM.jl ",
+                "(e.g. `ENV[\"LIGHTGBM_PATH\"] = \"../LightGBM\"`).")
         end
     end
     println("Finished __init__()")
