@@ -44,7 +44,6 @@ println("Set ENV[\"LIGHTGBM_PATH\"]=",ENV["LIGHTGBM_PATH"])
 function __init__()
     println("Start __init__")
     ENV["LIGHTGBM_PATH"] = lgbm_librarysetup()
-    LGBM_library=""
 
     if !haskey(ENV, "LIGHTGBM_PATH")
         error("Environment variable LIGHTGBM_PATH not found. ",
@@ -63,16 +62,7 @@ function __init__()
 
         if LGBM_library == ""
             println("LGBM_library is null. step3...")
-            ligthgbmpath=joinpath(abspath(joinpath(dirname(Base.find_package("LightGBM")), "..")),"deps/usr/lib")
-            if Sys.islinux()
-                global LGBM_library=joinpath(ligthgbmpath,"lib_lightgbm.so")
-            elseif Sys.iswindows()
-                global LGBM_library=joinpath(ligthgbmpath,"lib_lightgbm.dll")
-            elseif Sys.isapple()
-                global LGBM_library=joinpath(ligthgbmpath,"lib_lightgbm.dylib")
-            else
-                global LGBM_library=""
-            end
+            global LGBM_library = prefix
         end
 
         if LGBM_library == ""
