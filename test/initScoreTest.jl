@@ -6,11 +6,11 @@
 @testset "initScoreTest.jl" begin
     try
         # Test regression estimator.
-        if isfile( string(ENV["LIGHTGBM_PATH"],"/examples/regression/regression.test") )
-            regression_test = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/regression/regression.test", '\t');
-            regression_train = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/regression/regression.train", '\t');
-            regression_test_init = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/regression/regression.test.init", '\t')[:,1];
-            regression_train_init = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/regression/regression.train.init", '\t')[:,1]; 
+        if isfile( joinpath(ENV["LIGHTGBM_PATH"],"examples/regression/regression.test") )
+            regression_test = readdlm(joinpath(ENV["LIGHTGBM_PATH"] , "examples/regression/regression.test"), '\t');
+            regression_train = readdlm(joinpath(ENV["LIGHTGBM_PATH"] , "examples/regression/regression.train"), '\t');
+            regression_test_init = readdlm(joinpath(ENV["LIGHTGBM_PATH"] , "examples/regression/regression.test.init"), '\t')[:,1];
+            regression_train_init = readdlm(joinpath(ENV["LIGHTGBM_PATH"] , "examples/regression/regression.train.init"), '\t')[:,1]; 
         else
             res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/regression/regression.test");
             work=String(res.body);

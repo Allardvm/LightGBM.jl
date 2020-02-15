@@ -7,9 +7,9 @@ using DataFrames,CSV,HTTP
 @testset "LightGBM.jl" begin
     # Use binary example for generic tests.
     println("runtest.jl ENV[\"LIGHTGBM_PATH\"] is ",ENV["LIGHTGBM_PATH"])
-    if isfile( string(ENV["LIGHTGBM_PATH"],"/examples/binary_classification/binary.test") )
-        binary_test = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/binary_classification/binary.test", '\t');
-        binary_train = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/binary_classification/binary.train", '\t');
+    if isfile( joinpath(ENV["LIGHTGBM_PATH"],"examples/binary_classification/binary.test") )
+        binary_test = readdlm(joinpath(ENV["LIGHTGBM_PATH"] , "examples/binary_classification/binary.test"), '\t');
+        binary_train = readdlm(joinpath(ENV["LIGHTGBM_PATH"] , "examples/binary_classification/binary.train"), '\t');
     else
         res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/binary_classification/binary.test");
         work=String(res.body);
@@ -88,9 +88,9 @@ using DataFrames,CSV,HTTP
     LightGBM.search_cv(estimator, X_train, y_train, splits, params; verbosity = 0);
 
     # Test regression estimator.
-    if isfile( string(ENV["LIGHTGBM_PATH"],"/examples/regression/regression.test") )
-        regression_test = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/regression/regression.test", '\t');
-        regression_train = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/regression/regression.train", '\t');
+    if isfile( joinpath(ENV["LIGHTGBM_PATH"],"examples/regression/regression.test") )
+        regression_test = readdlm(joinpath(ENV["LIGHTGBM_PATH"] , "examples/regression/regression.test"), '\t');
+        regression_train = readdlm(joinpath(ENV["LIGHTGBM_PATH"] , "examples/regression/regression.train"), '\t');
     else
         res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/regression/regression.test");
         work=String(res.body);
@@ -124,9 +124,9 @@ using DataFrames,CSV,HTTP
     @test scores["test_1"]["l2"][end] < .5
 
     # Test multiclass estimator.
-    if isfile( string(ENV["LIGHTGBM_PATH"],"/examples/multiclass_classification/multiclass.test") )
-        multiclass_test = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/multiclass_classification/multiclass.test", '\t');
-        multiclass_train = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/multiclass_classification/multiclass.train", '\t');
+    if isfile( joinpath(ENV["LIGHTGBM_PATH"],"examples/multiclass_classification/multiclass.test") )
+        multiclass_test = readdlm(joinpath(ENV["LIGHTGBM_PATH"] , "examples/multiclass_classification/multiclass.test"), '\t');
+        multiclass_train = readdlm(joinpath(ENV["LIGHTGBM_PATH"] , "examples/multiclass_classification/multiclass.train"), '\t');
     else
         res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/multiclass_classification/multiclass.test");
         work=String(res.body);

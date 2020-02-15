@@ -2,11 +2,11 @@
 
 @testset "weightsTest.jl" begin
     try
-        if isfile( string(ENV["LIGHTGBM_PATH"],"/examples/binary_classification/binary.test") )
-            binary_test = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/binary_classification/binary.test", '\t');
-            binary_train = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/binary_classification/binary.train", '\t');
-            binary_test_weight = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/binary_classification/binary.test.weight", '\t')[:,1];
-            binary_train_weight = readdlm(ENV["LIGHTGBM_PATH"] * "/examples/binary_classification/binary.train.weight", '\t')[:,1];
+        if isfile( joinpath(ENV["LIGHTGBM_PATH"],"examples/binary_classification/binary.test") )
+            binary_test = readdlm(joinpath(ENV["LIGHTGBM_PATH"] , "examples/binary_classification/binary.test"), '\t');
+            binary_train = readdlm(joinpath(ENV["LIGHTGBM_PATH"] , "examples/binary_classification/binary.train"), '\t');
+            binary_test_weight = readdlm(joinpath(ENV["LIGHTGBM_PATH"] , "examples/binary_classification/binary.test.weight"), '\t')[:,1];
+            binary_train_weight = readdlm(joinpath(ENV["LIGHTGBM_PATH"] , "examples/binary_classification/binary.train.weight"), '\t')[:,1];
         else
             res = HTTP.get("https://raw.githubusercontent.com/microsoft/LightGBM/v2.3.1/examples/binary_classification/binary.test");
             work=String(res.body);
