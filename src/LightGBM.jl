@@ -8,7 +8,7 @@ import StatsBase
 # if LIGHTGBM_PATH is difined, automatical define LIGHTGBM_PATH
 function lgbm_librarysetup()
     try
-        println("ENV[\"LIGHTGBM_PATH\"] is　",ENV["LIGHTGBM_PATH"])
+        println("ENV[\"LIGHTGBM_PATH\"] is ",ENV["LIGHTGBM_PATH"])
         return ENV["LIGHTGBM_PATH"]
     catch
         println("Don't find ENV[\"LIGHTGBM_PATH\"].LightGBM library setup start...")
@@ -63,6 +63,11 @@ function __init__()
         if LGBM_library == ""
             println("LGBM_library is null. step3...")
             global LGBM_library = prefix
+        end
+
+        if LGBM_library == ""
+            println("LGBM_library is null. step4..")
+            global LGBM_library = ligthgbmpath
         end
 
         if LGBM_library == ""
