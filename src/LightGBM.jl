@@ -43,39 +43,22 @@ println("Set ENV[\"LIGHTGBM_PATH\"]=",ENV["LIGHTGBM_PATH"])
 
 function __init__()
     println("Start __init__")
-    ENV["LIGHTGBM_PATH"] = lgbm_librarysetup()
+
+    try
+        println("LIGHTGBM_PATH:",ENV["LIGHTGBM_PATH"]);
+    catch
+        println("LIGHTGBM_PATH setup1...")
+        ENV["LIGHTGBM_PATH"] = lgbm_librarysetup()
+        global LGBM_library = Libdl.find_library(["lib_lightgbm.so", "lib_lightgbm.dll",
+            "lib_lightgbm.dylib"], [ENV["LIGHTGBM_PATH"]])
+    end
 
     if !haskey(ENV, "LIGHTGBM_PATH")
         error("Environment variable LIGHTGBM_PATH not found. ",
             "Set this variable to point to the LightGBM directory prior to loading LightGBM.jl ",
             "(e.g. `ENV[\"LIGHTGBM_PATH\"] = \"../LightGBM\"`).")
-    else
-        try
-            println("LIGHTGBM_PATH setup1...")
-            global LGBM_library = Libdl.find_library(["lib_lightgbm.so", "lib_lightgbm.dll",
-                "lib_lightgbm.dylib"], [ENV["LIGHTGBM_PATH"]])
-        catch
-            println("LGBM_library is null. step2...")
-            global LGBM_library = Libdl.find_library(["lib_lightgbm.so", "lib_lightgbm.dll",
-            "lib_lightgbm.dylib"], [lgbm_librarysetup()])
-        end
-
-        if LGBM_library == ""
-            println("LGBM_library is null. step3...")
-            global LGBM_library = prefix
-        end
-
-        if LGBM_library == ""
-            println("LGBM_library is null. step4..")
-            global LGBM_library = ligthgbmpath
-        end
-
-        if LGBM_library == ""
-            error("Could not open the LightGBM library at $(ENV["LIGHTGBM_PATH"]). ",
-                "Set this variable to point to the LightGBM directory prior to loading LightGBM.jl ",
-                "(e.g. `ENV[\"LIGHTGBM_PATH\"] = \"../LightGBM\"`).")
-        end
     end
+
     println("Finished __init__()")
 end
 
