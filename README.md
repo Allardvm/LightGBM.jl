@@ -21,6 +21,12 @@ version that has been confirmed to work with this package.
 
 Then add the package to Julia with:
 ```julia
+]
+add "https://github.com/Allardvm/LightGBM.jl.git"
+```
+or  
+```julia
+using Pkg
 Pkg.clone("https://github.com/Allardvm/LightGBM.jl.git")
 ```
 

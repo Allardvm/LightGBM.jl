@@ -38,6 +38,9 @@ if unsatisfied || !isinstalled(dl_info...; prefix=prefix)
     # Download and install binaries
     mkpath(ligthgbmpath)
     download(dl_info[1],prefix)
+    if Sys.isapple()
+        download("https://github.com/Qiskit/qiskit-aer/raw/master/src/third-party/macos/lib/libomp.dylib",joinpath(ligthgbmpath,"libomp.dylib"))
+    end
     println("Installed library")
     println("Before loading LightGBM.jl, set this variable to point to the directory where you installed the LightGBM library.")
     println("ENV[\"LIGHTGBM_PATH\"] =",ligthgbmpath)
