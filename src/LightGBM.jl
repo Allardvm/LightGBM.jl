@@ -39,7 +39,6 @@ end
 
 # pre initialization
 ENV["LIGHTGBM_PATH"] = lgbm_librarysetup();
-println("Set ENV[\"LIGHTGBM_PATH\"]=",ENV["LIGHTGBM_PATH"])
 
 function __init__()
     println("Start __init__")
