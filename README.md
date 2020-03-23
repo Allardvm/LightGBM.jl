@@ -2,7 +2,6 @@ LightGBM.jl
 ========
 
 [![License](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE.md)
-[![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://wakakusa.github.io/LightGBM.jl/dev)
 
 
 **LightGBM.jl** provides a high-performance Julia interface for Microsoft's
