@@ -3,6 +3,8 @@ LightGBM.jl
 
 [![License](http://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](LICENSE.md)
 
+_**This repository has been archived, since the package has moved to a new [repository](https://github.com/IQVIA-ML/LightGBM.jl).**_
+
 **LightGBM.jl** provides a high-performance Julia interface for Microsoft's
 [LightGBM](https://github.com/Microsoft/LightGBM). The packages adds several convenience features,
 including automated cross-validation and exhaustive search procedures, and automatically converts
